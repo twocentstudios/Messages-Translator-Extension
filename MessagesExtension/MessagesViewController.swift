@@ -9,6 +9,16 @@
 import UIKit
 import Messages
 
+enum ViewState {
+    case promptNew
+    case translationNew
+    case translationPart
+    case translationComplete
+    case correctionNew
+    case correctionPart
+    case correctionComplete
+}
+
 class MessagesViewController: MSMessagesAppViewController {
     @IBOutlet weak var messageStackView: UIStackView!
     @IBOutlet weak var buttonStackView: UIStackView!
