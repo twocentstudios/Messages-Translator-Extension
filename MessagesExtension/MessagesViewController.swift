@@ -10,6 +10,10 @@ import UIKit
 import Messages
 
 class MessagesViewController: MSMessagesAppViewController {
+    @IBOutlet weak var messageStackView: UIStackView!
+    @IBOutlet weak var buttonStackView: UIStackView!
+    @IBOutlet weak var messageTextField: UITextField!
+    @IBOutlet weak var correctedTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,6 +65,14 @@ class MessagesViewController: MSMessagesAppViewController {
         // Called before the extension transitions to a new presentation style.
     
         // Use this method to prepare for the change in presentation style.
+        switch presentationStyle {
+        case .compact:
+            messageStackView.isHidden = true
+            buttonStackView.isHidden = false
+        case .expanded:
+            messageStackView.isHidden = false
+            buttonStackView.isHidden = true
+        }
     }
     
     override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
