@@ -1,5 +1,5 @@
 //
-//  Translation.swift
+//  Correction.swift
 //  messagesbeta
 //
 //  Created by Christopher Trott on 6/14/16.
@@ -8,39 +8,46 @@
 
 import Messages
 
-enum TranslationAnswer: RawRepresentable {
-    case known(String)
+enum CorrectionAnswer: RawRepresentable {
+    case correct
+    case incorrect(String)
     case unknown
     
     init?(rawValue: String) {
         switch rawValue {
         case "":
             self = .unknown
+        case "✓":
+            self = .correct
         case let rawValue:
-            self = .known(rawValue)
+            self = .incorrect(rawValue)
         }
     }
     
     var rawValue: String {
         switch self {
+        case .correct:
+            return "✓"
+        case .incorrect(let incorrect):
+            return incorrect
         case .unknown:
             return ""
-        case .known(let known):
-            return known
         }
     }
 }
 
-struct Translation {
+struct Correction {
     var question: String?
-    var answer: TranslationAnswer?
+    var answer: CorrectionAnswer?
     
     var isComplete: Bool {
         return question != nil && answer != nil
     }
 }
 
-extension Translation {
+
+
+extension Correction {
     static let questionQueryName = "question"
     static let answerQueryName = "answer"
     
@@ -56,10 +63,10 @@ extension Translation {
 }
 
 /**
- Extends `Translation` to be able to be represented by and created with an array of
+ Extends `Correction` to be able to be represented by and created with an array of
  `NSURLQueryItem`s.
  */
-extension Translation {
+extension Correction {
     // MARK: Computed properties
     
     var queryItems: [URLQueryItem] {
@@ -79,14 +86,14 @@ extension Translation {
     
     init?(queryItems: [URLQueryItem]) {
         var question: String?
-        var answer: TranslationAnswer?
+        var answer: CorrectionAnswer?
         
         for queryItem in queryItems {
             guard let value = queryItem.value else { continue }
             
-            if queryItem.name == Translation.questionQueryName {
+            if queryItem.name == Correction.questionQueryName {
                 question = value
-            } else if let answerType = TranslationAnswer(rawValue: value) where queryItem.name == Translation.answerQueryName {
+            } else if let answerType = CorrectionAnswer(rawValue: value) where queryItem.name == Correction.answerQueryName {
                 answer = answerType
             }
         }
@@ -96,19 +103,21 @@ extension Translation {
     }
 }
 
-extension TranslationAnswer: Equatable {}
-func ==(lhs: TranslationAnswer, rhs: TranslationAnswer) -> Bool {
+extension CorrectionAnswer: Equatable {}
+func ==(lhs: CorrectionAnswer, rhs: CorrectionAnswer) -> Bool {
     switch (lhs, rhs) {
     case (.unknown, .unknown):
         return true
-    case let (.known(lKnown), .known(rKnown)):
-        return lKnown == rKnown
+    case (.correct, .correct):
+        return true
+    case let (.incorrect(lIncorrect), .incorrect(rIncorrect)):
+        return lIncorrect == (rIncorrect)
     default:
         return false
     }
 }
 
-extension Translation: Equatable {}
-func ==(lhs: Translation, rhs: Translation) -> Bool {
+extension Correction: Equatable {}
+func ==(lhs: Correction, rhs: Correction) -> Bool {
     return lhs.question == rhs.question && lhs.answer == rhs.answer
 }

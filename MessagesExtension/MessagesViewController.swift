@@ -9,16 +9,6 @@
 import UIKit
 import Messages
 
-enum ViewState {
-    case promptNew
-    case translationNew
-    case translationPart
-    case translationComplete
-    case correctionNew
-    case correctionPart
-    case correctionComplete
-}
-
 class MessagesViewController: MSMessagesAppViewController {
     @IBOutlet weak var messageStackView: UIStackView!
     @IBOutlet weak var buttonStackView: UIStackView!
@@ -42,6 +32,7 @@ class MessagesViewController: MSMessagesAppViewController {
         // This will happen when the extension is about to present UI.
         
         // Use this method to configure the extension and restore previously stored state.
+        let viewState = ViewState.fromConversation(conversation)
     }
     
     override func didResignActive(with conversation: MSConversation) {
