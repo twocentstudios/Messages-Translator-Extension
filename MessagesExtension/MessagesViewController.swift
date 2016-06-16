@@ -33,6 +33,59 @@ class MessagesViewController: MSMessagesAppViewController {
         
         // Use this method to configure the extension and restore previously stored state.
         let viewState = ViewState.fromConversation(conversation)
+        
+        switch viewState {
+        case .promptNew:
+            messageTextField.text = nil
+            correctedTextField.text = nil
+            messageTextField.isEnabled = false
+            correctedTextField.isEnabled = false
+        case .translationNew:
+            messageTextField.text = nil
+            correctedTextField.text = nil
+            messageTextField.isEnabled = true
+            correctedTextField.isEnabled = false
+        case let .translationPart(question: q):
+            messageTextField.text = q
+            correctedTextField.text = nil
+            messageTextField.isEnabled = false
+            correctedTextField.isEnabled = true
+        case let .translationCompleteUnknown(question: q):
+            messageTextField.text = q
+            correctedTextField.text = "Don't know" // TODO: other UI
+            messageTextField.isEnabled = false
+            correctedTextField.isEnabled = false
+        case let .translationCompleteKnown(question: q, answer: a):
+            messageTextField.text = q
+            correctedTextField.text = a
+            messageTextField.isEnabled = false
+            correctedTextField.isEnabled = false
+        case .correctionNew:
+            messageTextField.text = nil
+            correctedTextField.text = nil
+            messageTextField.isEnabled = true
+            correctedTextField.isEnabled = false
+        case let .correctionPart(question: q):
+            messageTextField.text = q
+            correctedTextField.text = nil
+            messageTextField.isEnabled = false
+            correctedTextField.isEnabled = true
+        case let .correctionCompleteCorrect(question: q):
+            messageTextField.text = q
+            correctedTextField.text = "Correct!" // TODO: other UI
+            messageTextField.isEnabled = false
+            correctedTextField.isEnabled = false
+        case let .correctionCompleteUnknown(question: q):
+            messageTextField.text = q
+            correctedTextField.text = "Don't know" // TODO: other UI
+            messageTextField.isEnabled = false
+            correctedTextField.isEnabled = false
+        case let .correctionCompleteIncorrect(question: q, answer: a):
+            messageTextField.text = q
+            correctedTextField.text = a
+            messageTextField.isEnabled = false
+            correctedTextField.isEnabled = false
+        }
     }
     
     override func didResignActive(with conversation: MSConversation) {
