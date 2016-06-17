@@ -15,26 +15,58 @@
                         <viewControllerLayoutGuide type="top" id="qkL-Od-lgU"/>
                         <viewControllerLayoutGuide type="bottom" id="n38-gi-rB5"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="zMn-AG-sqS">
+                    <view key="view" contentMode="scaleToFill" id="zMn-AG-sqS" customClass="MessagesView" customModule="MessagesExtension" customModuleProvider="target">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="fPW-jP-wGA">
+                            <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="fPW-jP-wGA">
                                 <subviews>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Write something" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hfd-nJ-McJ" userLabel="MessageTextField">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mZh-Va-6Vd" userLabel="questionLabel">
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Write something" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hfd-nJ-McJ" userLabel="questionTextField">
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="ObA-dk-sSI" id="CwN-b9-hEB"/>
-                                        </connections>
                                     </textField>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Correct the text above" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B22-CD-T3b" userLabel="CorrectedTextField">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zwo-oy-9dV" userLabel="spacer">
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="10" id="isa-sn-2GA"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cbS-UO-Bev" userLabel="answerLabel">
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Correct the text above" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="B22-CD-T3b" userLabel="answerTextField">
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="ObA-dk-sSI" id="kZO-gx-166"/>
-                                        </connections>
                                     </textField>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" translatesAutoresizingMaskIntoConstraints="NO" id="aly-IW-c9k" userLabel="Accept Buttons Stack View">
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LPV-Xn-Dhy" userLabel="ternaryAccept">
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="ternaryAcceptTap:" destination="zMn-AG-sqS" eventType="touchUpInside" id="XCs-Uc-G7l"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oie-gt-JBu" userLabel="secondaryAccept">
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="secondaryAcceptTap:" destination="zMn-AG-sqS" eventType="touchUpInside" id="8mM-qo-Rqi"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cZX-X1-cIP" userLabel="primaryAccept">
+                                                <state key="normal" title="Button"/>
+                                                <connections>
+                                                    <action selector="primaryAcceptTap:" destination="zMn-AG-sqS" eventType="touchUpInside" id="wHB-3m-fPw"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="B22-CD-T3b" firstAttribute="height" secondItem="hfd-nJ-McJ" secondAttribute="height" id="6P8-gX-XlF"/>
@@ -44,9 +76,15 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4r3-zx-GEp" userLabel="translationButton">
                                         <state key="normal" title="Ask for translation"/>
+                                        <connections>
+                                            <action selector="translationButtonTap:" destination="zMn-AG-sqS" eventType="touchUpInside" id="f28-5C-y1f"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7A0-nh-Hxc" userLabel="correctionButton">
                                         <state key="normal" title="Ask for correction"/>
+                                        <connections>
+                                            <action selector="correctionButtonTap:" destination="zMn-AG-sqS" eventType="touchUpInside" id="BBQ-tO-ZDy"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -56,23 +94,32 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="fPW-jP-wGA" firstAttribute="top" secondItem="qkL-Od-lgU" secondAttribute="bottom" constant="20" id="AHf-ml-s0d"/>
-                            <constraint firstItem="lc9-vf-pbH" firstAttribute="top" secondItem="qkL-Od-lgU" secondAttribute="bottom" id="PWx-FS-9nD"/>
+                            <constraint firstItem="fPW-jP-wGA" firstAttribute="top" secondItem="qkL-Od-lgU" secondAttribute="bottom" constant="20" id="6An-oY-bXb"/>
+                            <constraint firstItem="n38-gi-rB5" firstAttribute="top" secondItem="lc9-vf-pbH" secondAttribute="bottom" id="Omd-fU-nim"/>
                             <constraint firstItem="lc9-vf-pbH" firstAttribute="leading" secondItem="zMn-AG-sqS" secondAttribute="leadingMargin" id="QHL-aT-y0R"/>
-                            <constraint firstItem="n38-gi-rB5" firstAttribute="top" secondItem="lc9-vf-pbH" secondAttribute="bottom" id="WOW-xx-mC6"/>
-                            <constraint firstItem="fPW-jP-wGA" firstAttribute="centerX" secondItem="zMn-AG-sqS" secondAttribute="centerX" id="XLl-xl-PLz"/>
-                            <constraint firstItem="fPW-jP-wGA" firstAttribute="width" secondItem="zMn-AG-sqS" secondAttribute="width" id="YaP-Va-g0Q"/>
+                            <constraint firstItem="fPW-jP-wGA" firstAttribute="leading" secondItem="zMn-AG-sqS" secondAttribute="leadingMargin" id="UWB-NG-2PS"/>
                             <constraint firstAttribute="trailingMargin" secondItem="lc9-vf-pbH" secondAttribute="trailing" id="be4-Lc-Uu0"/>
+                            <constraint firstItem="lc9-vf-pbH" firstAttribute="top" secondItem="qkL-Od-lgU" secondAttribute="bottom" id="h4j-60-6Gx"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="fPW-jP-wGA" secondAttribute="trailing" id="rXV-ae-h3M"/>
                         </constraints>
+                        <connections>
+                            <outlet property="answerLabel" destination="cbS-UO-Bev" id="jLa-Nc-lQr"/>
+                            <outlet property="answerTextField" destination="B22-CD-T3b" id="2tr-dJ-8Uk"/>
+                            <outlet property="buttonsStackView" destination="lc9-vf-pbH" id="vUE-he-zkn"/>
+                            <outlet property="correctionButton" destination="7A0-nh-Hxc" id="S0T-WO-qis"/>
+                            <outlet property="primaryAccept" destination="cZX-X1-cIP" id="CoK-iu-Z8y"/>
+                            <outlet property="questionLabel" destination="mZh-Va-6Vd" id="dB5-n8-WHq"/>
+                            <outlet property="questionTextField" destination="hfd-nJ-McJ" id="maq-P5-1tv"/>
+                            <outlet property="secondaryAccept" destination="oie-gt-JBu" id="zMx-WP-NKe"/>
+                            <outlet property="ternaryAccept" destination="LPV-Xn-Dhy" id="ONK-wg-pZo"/>
+                            <outlet property="textFieldStackView" destination="fPW-jP-wGA" id="47S-JB-rt7"/>
+                            <outlet property="translationButton" destination="4r3-zx-GEp" id="DsC-Nk-yVy"/>
+                        </connections>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="528"/>
                     <connections>
-                        <outlet property="MessageStackView" destination="fPW-jP-wGA" id="5td-uc-sj3"/>
-                        <outlet property="buttonStackView" destination="lc9-vf-pbH" id="D4h-iS-WMZ"/>
-                        <outlet property="correctedTextField" destination="B22-CD-T3b" id="wma-Kq-5IH"/>
-                        <outlet property="messageStackView" destination="fPW-jP-wGA" id="oln-D3-DIh"/>
-                        <outlet property="messageTextField" destination="hfd-nJ-McJ" id="qHY-5O-cFA"/>
+                        <outlet property="messagesView" destination="zMn-AG-sqS" id="a1b-Ua-8Lu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X47-rx-isc" userLabel="First Responder" sceneMemberID="firstResponder"/>

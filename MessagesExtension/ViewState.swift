@@ -26,6 +26,10 @@ extension ViewState {
     static func fromConversation(_ conversation: MSConversation) -> ViewState {
         guard let message = conversation.selectedMessage else { return .promptNew }
         guard let pair = Pair(message: message) else { return .promptNew }
+        return fromPair(pair)
+    }
+    
+    static func fromPair(_ pair: Pair) -> ViewState {
         switch pair {
         case (.translation(let translation)):
             if let q = translation.question, a = translation.answer {
