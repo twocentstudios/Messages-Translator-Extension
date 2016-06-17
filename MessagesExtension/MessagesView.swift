@@ -9,7 +9,7 @@
 import UIKit
 
 protocol MessagesViewDelegate: NSObjectProtocol {
-    func didUpdate(_ view: MessagesView, oldState: ViewState, newState: ViewState)
+    func didAction(_ view: MessagesView, action: ViewAction, state: ViewState)
 }
 
 class MessagesView: UIView {
@@ -206,65 +206,65 @@ class MessagesView: UIView {
     }
 
     @IBAction func translationButtonTap(_ sender: UIButton) {
-        delegate?.didUpdate(self, oldState: viewState, newState: .translationNew)
+        delegate?.didAction(self, action: ViewAction.createNewTranslation, state: viewState)
     }
     
     @IBAction func correctionButtonTap(_ sender: UIButton) {
-        delegate?.didUpdate(self, oldState: viewState, newState: .correctionNew)
+        delegate?.didAction(self, action: ViewAction.createNewCorrection, state: viewState)
     }
     
     @IBAction func primaryAcceptTap(_ sender: UIButton) {
-        var newState: ViewState?
+        var viewAction: ViewAction?
         switch viewState {
         case .translationNew:
             if let text = questionTextField.text {
-                newState = ViewState.translationPart(question: text)
+                viewAction = ViewAction.addTranslation(question: text)
             }
-        case .translationPart(let question):
+        case .translationPart:
             if let text = answerTextField.text {
-                newState = ViewState.translationCompleteKnown(question: question, answer: text)
+                viewAction = ViewAction.completeTranslationKnown(answer: text)
             }
         case .correctionNew:
             if let text = questionTextField.text {
-                newState = ViewState.correctionPart(question: text)
+                viewAction = ViewAction.addCorrection(question: text)
             }
-        case .correctionPart(let question):
+        case .correctionPart:
             if let text = answerTextField.text {
-                newState = ViewState.correctionCompleteIncorrect(question: question, answer: text)
+                viewAction = ViewAction.completeCorrectionIncorrect(answer: text)
             }
         default: break
         }
         
-        if let newState = newState {
-            delegate?.didUpdate(self, oldState: viewState, newState: newState)
+        if let viewAction = viewAction {
+            delegate?.didAction(self, action: viewAction, state: viewState)
         }
     }
    
     @IBAction func secondaryAcceptTap(_ sender: UIButton) {
-        var newState: ViewState?
+        var viewAction: ViewAction?
         switch viewState {
-        case .translationPart(let question):
-            newState = ViewState.translationCompleteUnknown(question: question)
-        case .correctionPart(let question):
-            newState = ViewState.correctionCompleteUnknown(question: question)
+        case .translationPart:
+            viewAction = ViewAction.completeTranslationUnknown
+        case .correctionPart:
+            viewAction = ViewAction.completeCorrectionUnknown
         default: break
         }
         
-        if let newState = newState {
-            delegate?.didUpdate(self, oldState: viewState, newState: newState)
+        if let viewAction = viewAction {
+            delegate?.didAction(self, action: viewAction, state: viewState)
         }
     }
     
     @IBAction func ternaryAcceptTap(_ sender: UIButton) {
-        var newState: ViewState?
+        var viewAction: ViewAction?
         switch viewState {
-        case .correctionPart(let question):
-            newState = ViewState.correctionCompleteCorrect(question: question)
+        case .correctionPart:
+            viewAction = ViewAction.completeCorrectionCorrect
         default: break
         }
         
-        if let newState = newState {
-            delegate?.didUpdate(self, oldState: viewState, newState: newState)
+        if let viewAction = viewAction {
+            delegate?.didAction(self, action: viewAction, state: viewState)
         }
     }
 }

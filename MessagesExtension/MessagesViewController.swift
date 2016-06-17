@@ -9,11 +9,15 @@
 import UIKit
 import Messages
 
-class MessagesViewController: MSMessagesAppViewController {
+class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate {
     @IBOutlet weak var messagesView: MessagesView!
+    
+    var pair: Pair?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        messagesView.delegate = self
         // Do any additional setup after loading the view.
     }
     
@@ -29,8 +33,9 @@ class MessagesViewController: MSMessagesAppViewController {
         // This will happen when the extension is about to present UI.
         
         // Use this method to configure the extension and restore previously stored state.
-        let viewState = ViewState.fromConversation(conversation)
-    
+        pair = Pair(conversation: conversation)
+        let viewState = pair?.viewState ?? ViewState.promptNew
+        messagesView.viewState = viewState
     }
     
     override func didResignActive(with conversation: MSConversation) {
@@ -66,7 +71,7 @@ class MessagesViewController: MSMessagesAppViewController {
         // Use this method to prepare for the change in presentation style.
         switch presentationStyle {
         case .compact:
-            messagesView.viewState = .promptNew
+            // messagesView.viewState = .promptNew
             print("compact")
         case .expanded:
 //            messagesView.viewState = 
@@ -79,5 +84,12 @@ class MessagesViewController: MSMessagesAppViewController {
     
         // Use this method to finalize any behaviors associated with the change in presentation style.
     }
-
+    
+    // MARK: MessagesViewDelegate
+    
+    func didAction(_ view: MessagesView, action: ViewAction, state: ViewState) {
+        guard let conversation = activeConversation else { fatalError("Expected a conversation") }
+    }
+    
 }
+
