@@ -26,7 +26,7 @@ extension Pair {
 }
 
 extension Pair {
-    func composeMessage(_ session: MSSession) -> MSMessage {
+    func composeMessage(_ session: MSSession) -> MSMessage? {
         var components = URLComponents()
         components.queryItems = self.queryItems
         
@@ -39,7 +39,7 @@ extension Pair {
             layout.trailingCaption = message.trailingCaption
             layout.trailingSubcaption = message.trailingSubcaption
         } else {
-            fatalError("Can't compose message for viewState: \(viewState)")
+            return nil
         }
         
         let message = MSMessage(session: session)
