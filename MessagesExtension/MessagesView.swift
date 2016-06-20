@@ -202,7 +202,8 @@ class MessagesView: UIView {
     }
     
     required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        viewState = ViewState.promptNew
+        super.init(coder: aDecoder)
     }
 
     @IBAction func translationButtonTap(_ sender: UIButton) {
