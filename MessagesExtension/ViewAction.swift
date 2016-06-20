@@ -6,7 +6,7 @@
 //  Copyright © 2016 twocentstudios. All rights reserved.
 //
 
-enum ViewAction {
+enum ViewAction {   
     case createNewTranslation
     case createNewCorrection
     case addTranslation(question: String)
@@ -16,6 +16,27 @@ enum ViewAction {
     case completeCorrectionIncorrect(answer: String)
     case completeCorrectionCorrect
     case completeCorrectionUnknown
+}
+
+extension ViewAction {
+    func to(_ pair: Pair?) -> Pair? {
+        switch (self, pair) {
+        case (.createNewCorrection, _):
+            return nil
+        case (.createNewTranslation, _):
+            return nil
+        case (.addCorrection, _):
+            return .correction(Correction().from(self))
+        case (.addTranslation, _):
+            return .translation(Translation().from(self))
+        case (_, .some(.correction(let correction))):
+            return .correction(correction.from(self))
+        case (_, .some(.translation(let translation))):
+            return .translation(translation.from(self))
+        default:
+            return nil
+        }
+    }
 }
 
 extension Pair {

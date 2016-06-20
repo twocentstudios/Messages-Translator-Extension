@@ -67,14 +67,12 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     
     override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
         // Called before the extension transitions to a new presentation style.
-    
+        
         // Use this method to prepare for the change in presentation style.
         switch presentationStyle {
         case .compact:
-            // messagesView.viewState = .promptNew
             print("compact")
         case .expanded:
-//            messagesView.viewState = 
             print("expanded")
         }
     }
@@ -89,6 +87,28 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     
     func didAction(_ view: MessagesView, action: ViewAction, state: ViewState) {
         guard let conversation = activeConversation else { fatalError("Expected a conversation") }
+        
+        switch action {
+        case .createNewTranslation:
+            messagesView.viewState = .translationNew
+            requestPresentationStyle(.expanded)
+        case .createNewCorrection:
+            messagesView.viewState = .correctionNew
+            requestPresentationStyle(.expanded)
+        default:
+            let session = conversation.selectedMessage?.session ?? MSSession()
+            guard let newPair = action.to(self.pair) else { fatalError("Expected valid action") }
+            guard let message = newPair.composeMessage(session) else { fatalError("Expected a message") }
+            let changeDescription = "changed" // action.changeDescription // TODO
+            conversation.insert(message, localizedChangeDescription: changeDescription) { error in
+                if let error = error {
+                    fatalError("Message could not be inserted into conversation: \(error)") // TODO: investigate when this happens
+                }
+            }
+            dismiss() // TODO: investigate when this should be dismissed
+            
+            self.pair = newPair
+        }
     }
     
 }
