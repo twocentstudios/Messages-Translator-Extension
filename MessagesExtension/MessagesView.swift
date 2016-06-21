@@ -35,6 +35,8 @@ class MessagesView: UIView {
                 buttonsStackView.isHidden = false
                 questionTextField.text = nil
                 answerTextField.text = nil
+                translationButton.setTitle(NSLocalizedString("Ask for translation", comment: ""), for: [])
+                correctionButton.setTitle(NSLocalizedString("Ask for correction", comment: ""), for: [])
                 questionLabel.text = nil
                 answerLabel.text = nil
                 questionTextField.isEnabled = false
@@ -218,19 +220,19 @@ class MessagesView: UIView {
         var viewAction: ViewAction?
         switch viewState {
         case .translationNew:
-            if let text = questionTextField.text {
+            if let text = questionTextField.text where !text.isEmpty {
                 viewAction = ViewAction.addTranslation(question: text)
             }
         case .translationPart:
-            if let text = answerTextField.text {
+            if let text = answerTextField.text where !text.isEmpty {
                 viewAction = ViewAction.completeTranslationKnown(answer: text)
             }
         case .correctionNew:
-            if let text = questionTextField.text {
+            if let text = questionTextField.text where !text.isEmpty {
                 viewAction = ViewAction.addCorrection(question: text)
             }
         case .correctionPart:
-            if let text = answerTextField.text {
+            if let text = answerTextField.text where !text.isEmpty {
                 viewAction = ViewAction.completeCorrectionIncorrect(answer: text)
             }
         default: break
