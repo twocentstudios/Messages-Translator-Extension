@@ -50,4 +50,20 @@ extension Pair {
     }
 }
 
+extension ViewState {
+    func changeDescription() -> String? {
+        switch self {
+        case .promptNew, .translationNew, .correctionNew:
+            // Introductory states.
+            return nil
+        case .translationCompleteUnknown, .translationCompleteKnown, .correctionCompleteCorrect, .correctionCompleteUnknown, .correctionCompleteIncorrect:
+            // Ending states.
+            return nil
+        case .translationPart:
+            return NSLocalizedString("A new translation request was created.", comment: "")
+        case .correctionPart:
+            return NSLocalizedString("A new correction request was created.", comment: "")
+        }
+    }
+}
 
