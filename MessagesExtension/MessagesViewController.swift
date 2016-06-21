@@ -68,20 +68,13 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
         // Called before the extension transitions to a new presentation style.
         
-        let viewState = ViewState(pair: self.pair)
-        
         switch presentationStyle {
         case .compact:
-            // TODO: maybe always show promptNew view on .compact
-            switch viewState {
-            case .correctionNew, .translationNew, .correctionPart, .translationPart:
-                let newPair: Pair? = nil
-                let newViewState = ViewState(pair: newPair)
-                self.pair = newPair
-                self.messagesView.viewState = newViewState
-            default:
-                break
-            }
+            // Reset to .promptNew on collapse.
+            let newPair: Pair? = nil
+            let newViewState = ViewState(pair: newPair)
+            self.pair = newPair
+            self.messagesView.viewState = newViewState
         case .expanded:
             break
         }
