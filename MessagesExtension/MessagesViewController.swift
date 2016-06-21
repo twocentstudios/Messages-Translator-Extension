@@ -34,7 +34,7 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
         
         // Use this method to configure the extension and restore previously stored state.
         pair = Pair(conversation: conversation)
-        let viewState = pair?.viewState ?? ViewState.promptNew
+        let viewState = ViewState(pair: pair)
         messagesView.viewState = viewState
     }
     
@@ -68,12 +68,22 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
         // Called before the extension transitions to a new presentation style.
         
-        // Use this method to prepare for the change in presentation style.
+        let viewState = ViewState(pair: self.pair)
+        
         switch presentationStyle {
         case .compact:
-            print("compact")
+            // TODO: maybe always show promptNew view on .compact
+            switch viewState {
+            case .correctionNew, .translationNew, .correctionPart, .translationPart:
+                let newPair: Pair? = nil
+                let newViewState = ViewState(pair: newPair)
+                self.pair = newPair
+                self.messagesView.viewState = newViewState
+            default:
+                break
+            }
         case .expanded:
-            print("expanded")
+            break
         }
     }
     
@@ -86,29 +96,30 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     // MARK: MessagesViewDelegate
     
     func didAction(_ view: MessagesView, action: ViewAction, state: ViewState) {
-        guard let conversation = activeConversation else { fatalError("Expected a conversation") }
+        let newPair = action.combine(withPair: self.pair)
+        let newViewState = ViewState(pair: newPair)
         
-        switch action {
-        case .createNewTranslation:
-            messagesView.viewState = .translationNew
-            requestPresentationStyle(.expanded)
-        case .createNewCorrection:
-            messagesView.viewState = .correctionNew
+        switch newViewState {
+        case .promptNew:
+            break // This is an unexpected case.
+        case .translationNew, .correctionNew:
             requestPresentationStyle(.expanded)
         default:
+            guard let conversation = activeConversation else { fatalError("Expected a conversation") }
             let session = conversation.selectedMessage?.session ?? MSSession()
-            guard let newPair = action.to(self.pair) else { fatalError("Expected valid action") }
             guard let message = newPair.composeMessage(session) else { fatalError("Expected a message") }
-            let changeDescription = "changed" // action.changeDescription // TODO
+            let changeDescription = state.changeDescription()
             conversation.insert(message, localizedChangeDescription: changeDescription) { error in
                 if let error = error {
                     fatalError("Message could not be inserted into conversation: \(error)") // TODO: investigate when this happens
                 }
             }
-            dismiss() // TODO: investigate when this should be dismissed
-            
-            self.pair = newPair
+            dismiss()
         }
+        
+        self.pair = newPair
+        self.messagesView.viewState = newViewState
+        
     }
     
 }

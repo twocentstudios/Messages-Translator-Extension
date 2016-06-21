@@ -30,7 +30,7 @@ extension Pair {
         var components = URLComponents()
         components.queryItems = self.queryItems
         
-        let viewState = self.viewState
+        let viewState = ViewState(pair: self)
         
         let layout = MSMessageTemplateLayout()
         if let message = viewState.messageTemplateLayout {

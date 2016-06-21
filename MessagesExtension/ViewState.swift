@@ -22,32 +22,35 @@ enum ViewState {
     case correctionCompleteCorrect(question: String)
 }
 
-extension Pair {
-    var viewState: ViewState {
-        switch self {
-        case (.translation(let translation)):
-            if let q = translation.question, a = translation.answer {
-                switch a {
-                case .unknown: return .translationCompleteUnknown(question: q)
-                case .known(let answer): return .translationCompleteKnown(question: q, answer: answer)
+extension ViewState {
+    init(pair: Pair?) {
+        self = {
+            switch pair {
+            case .none: return .promptNew
+            case .some(.translation(let translation)):
+                if let q = translation.question, a = translation.answer {
+                    switch a {
+                    case .unknown: return .translationCompleteUnknown(question: q)
+                    case .known(let answer): return .translationCompleteKnown(question: q, answer: answer)
+                    }
+                } else if let q = translation.question {
+                    return .translationPart(question: q)
+                } else {
+                    return .translationNew
                 }
-            } else if let q = translation.question {
-                return .translationPart(question: q)
-            } else {
-                return .translationNew
-            }
-        case (.correction(let correction)):
-            if let q = correction.question, a = correction.answer {
-                switch a {
-                case .unknown: return .correctionCompleteUnknown(question: q)
-                case .correct: return .correctionCompleteCorrect(question: q)
-                case .incorrect(let answer): return .correctionCompleteIncorrect(question: q, answer: answer)
+            case .some(.correction(let correction)):
+                if let q = correction.question, a = correction.answer {
+                    switch a {
+                    case .unknown: return .correctionCompleteUnknown(question: q)
+                    case .correct: return .correctionCompleteCorrect(question: q)
+                    case .incorrect(let answer): return .correctionCompleteIncorrect(question: q, answer: answer)
+                    }
+                } else if let q = correction.question {
+                    return .correctionPart(question: q)
+                } else {
+                    return .correctionNew
                 }
-            } else if let q = correction.question {
-                return .correctionPart(question: q)
-            } else {
-                return .correctionNew
             }
-        }
+        }()
     }
 }

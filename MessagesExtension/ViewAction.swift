@@ -19,45 +19,23 @@ enum ViewAction {
 }
 
 extension ViewAction {
-    func to(_ pair: Pair?) -> Pair? {
+    func combine(withPair pair: Pair?) -> Pair {
         switch (self, pair) {
         case (.createNewCorrection, _):
-            return nil
+            return .correction(self.combine(withCorrection: Correction()))
         case (.createNewTranslation, _):
-            return nil
-        case (.addCorrection, _):
-            return .correction(Correction().from(self))
-        case (.addTranslation, _):
-            return .translation(Translation().from(self))
+            return .translation(self.combine(withTranslation: Translation()))
         case (_, .some(.correction(let correction))):
-            return .correction(correction.from(self))
+            return .correction(self.combine(withCorrection: correction))
         case (_, .some(.translation(let translation))):
-            return .translation(translation.from(self))
-        default:
-            return nil
+            return .translation(self.combine(withTranslation: translation))
+        default: fatalError("Invalid ViewAction/Pair combination.")
         }
     }
-}
-
-extension Pair {
-    func from(_ viewAction: ViewAction) -> Pair {
-        var pair = self
+    
+    func combine(withCorrection correction: Correction) -> Correction {
+        var correction = correction
         switch self {
-        case .correction(var correction):
-            correction = correction.from(viewAction)
-            pair = .correction(correction)
-        case .translation(var translation):
-            translation = translation.from(viewAction)
-            pair = .translation(translation)
-        }
-        return pair
-    }
-}
-
-extension Correction {
-    func from(_ viewAction: ViewAction) -> Correction {
-        var correction = self
-        switch viewAction {
         case .addCorrection(let question):
             correction.question = question
         case .completeCorrectionCorrect:
@@ -70,12 +48,10 @@ extension Correction {
         }
         return correction
     }
-}
-
-extension Translation {
-    func from(_ viewAction: ViewAction) -> Translation {
-        var translation = self
-        switch viewAction {
+    
+    func combine(withTranslation translation: Translation) -> Translation {
+        var translation = translation
+        switch self {
         case .addTranslation(let question):
             translation.question = question
         case .completeTranslationUnknown:
