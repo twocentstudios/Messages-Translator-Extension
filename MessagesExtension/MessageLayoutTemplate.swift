@@ -8,6 +8,7 @@
 
 import Foundation
 
+// Helper struct mirroring MSMessageTemplateLayout.
 struct MessageTemplateLayout {
     var caption: String?
     var subcaption: String?
@@ -15,6 +16,9 @@ struct MessageTemplateLayout {
     var trailingSubcaption: String?
 }
 
+// Create a MessageTemplateLayout from a ViewState.
+//
+// Returns nil if a ViewState has no valid Message representation.
 extension ViewState {
     var messageTemplateLayout: MessageTemplateLayout? {
         switch self {

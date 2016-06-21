@@ -8,10 +8,12 @@
 
 import UIKit
 
+// MessagesView communicates back to its delegate through the ViewAction enum.
 protocol MessagesViewDelegate: NSObjectProtocol {
     func didAction(_ view: MessagesView, action: ViewAction, state: ViewState)
 }
 
+// MessagesView handles both compact and expanded views via its buttonsStackView and textFieldStackView, respectively.
 class MessagesView: UIView {
     @IBOutlet weak var textFieldStackView: UIStackView!
     @IBOutlet weak var buttonsStackView: UIStackView!
@@ -27,6 +29,8 @@ class MessagesView: UIView {
     @IBOutlet weak var ternaryAccept: UIButton!
     
     internal weak var delegate: MessagesViewDelegate?
+    
+    // MessagesView's appearance is a function of its viewState.
     internal var viewState: ViewState {
         didSet {
             switch viewState {
@@ -215,6 +219,8 @@ class MessagesView: UIView {
     @IBAction func correctionButtonTap(_ sender: UIButton) {
         delegate?.didAction(self, action: ViewAction.createNewCorrection, state: viewState)
     }
+    
+    // Accept buttons are shared by viewStates and must be multiplexed.
     
     @IBAction func primaryAcceptTap(_ sender: UIButton) {
         var viewAction: ViewAction?

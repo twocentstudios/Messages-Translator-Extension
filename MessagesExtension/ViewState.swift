@@ -9,6 +9,7 @@
 import Foundation
 import Messages
 
+// Enumerates all possible configurations of MessagesView.
 enum ViewState {
     case promptNew
     case translationNew
@@ -22,6 +23,7 @@ enum ViewState {
     case correctionCompleteCorrect(question: String)
 }
 
+// Describes how to generate a ViewState from a Pair.
 extension ViewState {
     init(pair: Pair?) {
         self = {

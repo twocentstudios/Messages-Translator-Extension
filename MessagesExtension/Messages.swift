@@ -8,6 +8,7 @@
 
 import Messages
 
+// Create a Pair from an MSMessage.
 extension Pair {
     init?(message: MSMessage?) {
         guard let messageURL = message?.url else { return nil }
@@ -17,6 +18,7 @@ extension Pair {
     }
 }
 
+// Create a Pair from an MSConversation.
 extension Pair {
     init?(conversation: MSConversation) {
         guard let message = conversation.selectedMessage else { return nil }
@@ -25,6 +27,7 @@ extension Pair {
     }
 }
 
+// Create an MSMessage from a Pair.
 extension Pair {
     func composeMessage(_ session: MSSession) -> MSMessage? {
         var components = URLComponents()
@@ -50,6 +53,7 @@ extension Pair {
     }
 }
 
+// Create a textual description of a ViewState used by MSMessage.
 extension ViewState {
     func changeDescription() -> String? {
         switch self {

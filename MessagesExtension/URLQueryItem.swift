@@ -8,6 +8,8 @@
 
 import Foundation
 
+// MSMessage encodes its state in URL format. These are helper functions for
+// encoding our model's properties to/from URLQueryItems.
 extension Pair {
     static let typeQueryName = "type"
     

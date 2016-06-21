@@ -1,5 +1,5 @@
 //
-//  Translation.swift
+//  Pair.swift
 //  messagesbeta
 //
 //  Created by Christopher Trott on 6/14/16.
@@ -8,6 +8,8 @@
 
 import Messages
 
+// Top level model enum that represents a question/answer pair in either
+// translation or correction type.
 enum Pair {
     case translation(Translation)
     case correction(Correction)

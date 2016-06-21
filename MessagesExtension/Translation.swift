@@ -6,7 +6,10 @@
 //  Copyright © 2016 twocentstudios. All rights reserved.
 //
 
-import Messages
+// Translation is one of our question/answer pair types.
+//
+// Its TranslationAnswer RawRepresentable format is a bit adhoc. A more robust 
+// implementation would be more specific about encoding type information.
 
 enum TranslationAnswer: RawRepresentable {
     case known(String)

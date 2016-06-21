@@ -12,6 +12,8 @@ import Messages
 class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate {
     @IBOutlet weak var messagesView: MessagesView!
     
+    // Along with `conversation`, `pair` is the only state retained through the lifetime
+    // of MessagesViewController.
     var pair: Pair?
     
     override func viewDidLoad() {
@@ -26,6 +28,11 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     
     // MARK: - Conversation Handling
     
+    // Essentially the entry point to our extension.
+    //
+    // `conversation` will either have an `selectedMessage` or nil.
+    // An `selectedMessage` lets us know that the extension is being launched from an
+    // existing message rather than the app keyboard browser being opened.
     override func willBecomeActive(with conversation: MSConversation) {
         pair = Pair(conversation: conversation)
         let viewState = ViewState(pair: pair)
@@ -37,6 +44,12 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     override func didStartSending(_ message: MSMessage, conversation: MSConversation) { }
     override func didCancelSending(_ message: MSMessage, conversation: MSConversation) { }
     
+    // Called when transitioning to/from the app keyboard browser and full screen.
+    //
+    // In this extension we only show the `promptNew` view in compact mode.
+    //
+    // You'll have to determine your own rules for how to handle user initiated transitions
+    // via the disclosure button in the top/bottom right corner.
     override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
         switch presentationStyle {
         case .compact:
@@ -54,6 +67,14 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     
     // MARK: MessagesViewDelegate
     
+    // Essentially the exit point of our extension.
+    //
+    // The extension will either:
+    // * Expand (if it isn't already) to capture a new translation or correction.
+    // * Attach a new message to the conversation and dismiss.
+    //
+    // In both cases our model is updated by combining the view action with the previous model
+    // and a new view state is generated from the updated model.
     func didAction(_ view: MessagesView, action: ViewAction, state: ViewState) {
         let newPair = action.combine(withPair: self.pair)
         let newViewState = ViewState(pair: newPair)
@@ -78,7 +99,6 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
         
         self.pair = newPair
         self.messagesView.viewState = newViewState
-        
     }
     
 }

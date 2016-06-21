@@ -6,6 +6,7 @@
 //  Copyright © 2016 twocentstudios. All rights reserved.
 //
 
+// Enumerates all the possible user actions returned by MessagesView.
 enum ViewAction {   
     case createNewTranslation
     case createNewCorrection
@@ -18,6 +19,7 @@ enum ViewAction {
     case completeCorrectionUnknown
 }
 
+// Describes how to generate a new model from any previous model and a ViewAction.
 extension ViewAction {
     func combine(withPair pair: Pair?) -> Pair {
         switch (self, pair) {
