@@ -26,7 +26,7 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
         super.didReceiveMemoryWarning()
     }
     
-    // MARK: - Conversation Handling
+    // MARK: Conversation Handling
     
     // Essentially the entry point to our extension.
     //
@@ -34,15 +34,37 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     // An `selectedMessage` lets us know that the extension is being launched from an
     // existing message rather than the app keyboard browser being opened.
     override func willBecomeActive(with conversation: MSConversation) {
+        super.willBecomeActive(with: conversation)
+
         pair = Pair(conversation: conversation)
         let viewState = ViewState(pair: pair)
         messagesView.viewState = viewState
     }
     
-    override func didResignActive(with conversation: MSConversation) { }
+    override func didResignActive(with conversation: MSConversation) {
+        super.didBecomeActive(with: conversation)
+    }
+    
     override func didReceive(_ message: MSMessage, conversation: MSConversation) { }
     override func didStartSending(_ message: MSMessage, conversation: MSConversation) { }
     override func didCancelSending(_ message: MSMessage, conversation: MSConversation) { }
+    
+    // If our extension is already active and the user selects a message from this extension,
+    // this method will be called instead of `willBecomeActive`.
+    //
+    // BUG: There seems to be be a bug in iOS 10 beta 1 where overridden 
+    // `willSelect` and `didSelect` are never called.
+    override func willSelect(_ message: MSMessage, conversation: MSConversation) {
+        super.willSelect(message, conversation: conversation)
+        
+        pair = Pair(conversation: conversation)
+        let viewState = ViewState(pair: pair)
+        messagesView.viewState = viewState
+    }
+    
+    override func didSelect(_ message: MSMessage, conversation: MSConversation) {
+        super.didSelect(message, conversation: conversation)
+    }
     
     // Called when transitioning to/from the app keyboard browser and full screen.
     //
@@ -51,6 +73,8 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     // You'll have to determine your own rules for how to handle user initiated transitions
     // via the disclosure button in the top/bottom right corner.
     override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+        super.willTransition(to: presentationStyle)
+        
         switch presentationStyle {
         case .compact:
             // Reset to .promptNew on collapse.
@@ -63,7 +87,9 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
         }
     }
     
-    override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) { }
+    override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+        super.didTransition(to: presentationStyle)
+    }
     
     // MARK: MessagesViewDelegate
     
