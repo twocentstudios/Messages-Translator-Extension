@@ -35,19 +35,19 @@ extension Pair {
         
         let viewState = ViewState(pair: self)
         
+        guard let messageLayout = viewState.messageTemplateLayout else { return nil }
+        guard let accessibilityLabel = viewState.accessibilityLabel else { return nil }
+
         let layout = MSMessageTemplateLayout()
-        if let message = viewState.messageTemplateLayout {
-            layout.caption = message.caption
-            layout.subcaption = message.subcaption
-            layout.trailingCaption = message.trailingCaption
-            layout.trailingSubcaption = message.trailingSubcaption
-        } else {
-            return nil
-        }
+        layout.caption = messageLayout.caption
+        layout.subcaption = messageLayout.subcaption
+        layout.trailingCaption = messageLayout.trailingCaption
+        layout.trailingSubcaption = messageLayout.trailingSubcaption
         
         let message = MSMessage(session: session)
         message.url = components.url!
         message.layout = layout
+        message.accessibilityLabel = accessibilityLabel
         
         return message
     }
@@ -70,4 +70,31 @@ extension ViewState {
         }
     }
 }
+
+// Create a textual description of a ViewState used by MSMessage.
+extension ViewState {
+    var accessibilityLabel: String? {
+        switch self {
+        case .promptNew, .translationNew, .correctionNew:
+            // Introductory states.
+            return nil
+        case .translationPart(let question):
+            return NSLocalizedString("Translation request. \(question)", comment: "")
+        case .correctionPart(let question):
+            return NSLocalizedString("Correction request. \(question)", comment: "")
+        case .translationCompleteUnknown(let question):
+            return NSLocalizedString("Translation request. \(question). Answer is unknown.", comment: "")
+        case .translationCompleteKnown(let question, let answer):
+            return NSLocalizedString("Translation request. \(question). Answer is \(answer)", comment: "")
+        case .correctionCompleteCorrect(let question):
+            return NSLocalizedString("Correction request. \(question). Request is correct.", comment: "")
+        case .correctionCompleteUnknown(let question):
+            return NSLocalizedString("Correction request. \(question). Answer is unknown.", comment: "")
+        case .correctionCompleteIncorrect(let question, let answer):
+            return NSLocalizedString("Correction request. \(question). Answer is \(answer)", comment: "")
+
+        }
+    }
+}
+
 

@@ -52,7 +52,7 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
     // If our extension is already active and the user selects a message from this extension,
     // this method will be called instead of `willBecomeActive`.
     //
-    // BUG: There seems to be be a bug in iOS 10 beta 1 where overridden 
+    // BUG: There seems to be be a bug in iOS 10 beta 1 where overridden
     // `willSelect` and `didSelect` are never called.
     override func willSelect(_ message: MSMessage, conversation: MSConversation) {
         super.willSelect(message, conversation: conversation)
