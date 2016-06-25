@@ -2,7 +2,7 @@
 
 Messages Translator Extension is an example Messages Extension for Messages.app on iOS 10+. See the accompanying [blog post](http://twocentstudios.com/2016/06/24/a-deep-dive-into-ios-messages-extensions/)
 
-<video src="https://github.com/twocentstudios/Messages-Translator-Extension/blob/master/art/messages-correction.mov></video>
+[Correction Flow Screencast 5.3MB .mov](https://github.com/twocentstudios/Messages-Translator-Extension/blob/master/art/messages-correction.mov)
 
 #### Correction Flow
 
