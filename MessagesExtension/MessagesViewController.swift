@@ -41,8 +41,14 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
         messagesView.viewState = viewState
     }
     
-    override func didResignActive(with conversation: MSConversation) {
+    override func didBecomeActive(with conversation: MSConversation) {
         super.didBecomeActive(with: conversation)
+    }
+    override func didResignActive(with conversation: MSConversation) {
+        super.didResignActive(with: conversation)
+    }
+    override func willResignActive(with conversation: MSConversation) {
+        super.didResignActive(with: conversation)
     }
     
     override func didReceive(_ message: MSMessage, conversation: MSConversation) { }
