@@ -120,8 +120,8 @@ class MessagesViewController: MSMessagesAppViewController, MessagesViewDelegate 
             guard let conversation = activeConversation else { fatalError("Expected a conversation") }
             let session = conversation.selectedMessage?.session ?? MSSession()
             guard let message = newPair.composeMessage(session) else { fatalError("Expected a message") }
-            let changeDescription = state.changeDescription()
-            conversation.insert(message, localizedChangeDescription: changeDescription) { error in
+            let changeDescription = state.changeDescription() // TODO: Removed in beta2. Why?
+            conversation.insert(message) { error in
                 if let error = error {
                     fatalError("Message could not be inserted into conversation: \(error)") // TODO: investigate when this happens
                 }
