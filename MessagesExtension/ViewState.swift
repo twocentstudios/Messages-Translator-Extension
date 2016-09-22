@@ -30,7 +30,7 @@ extension ViewState {
             switch pair {
             case .none: return .promptNew
             case .some(.translation(let translation)):
-                if let q = translation.question, a = translation.answer {
+                if let q = translation.question, let a = translation.answer {
                     switch a {
                     case .unknown: return .translationCompleteUnknown(question: q)
                     case .known(let answer): return .translationCompleteKnown(question: q, answer: answer)
@@ -41,7 +41,7 @@ extension ViewState {
                     return .translationNew
                 }
             case .some(.correction(let correction)):
-                if let q = correction.question, a = correction.answer {
+                if let q = correction.question, let a = correction.answer {
                     switch a {
                     case .unknown: return .correctionCompleteUnknown(question: q)
                     case .correct: return .correctionCompleteCorrect(question: q)
