@@ -102,7 +102,7 @@ extension Translation {
             
             if queryItem.name == Translation.questionQueryName {
                 question = value
-            } else if let answerType = TranslationAnswer(rawValue: value) where queryItem.name == Translation.answerQueryName {
+            } else if let answerType = TranslationAnswer(rawValue: value), queryItem.name == Translation.answerQueryName {
                 answer = answerType
             }
         }
@@ -150,7 +150,7 @@ extension Correction {
             
             if queryItem.name == Correction.questionQueryName {
                 question = value
-            } else if let answerType = CorrectionAnswer(rawValue: value) where queryItem.name == Correction.answerQueryName {
+            } else if let answerType = CorrectionAnswer(rawValue: value), queryItem.name == Correction.answerQueryName {
                 answer = answerType
             }
         }

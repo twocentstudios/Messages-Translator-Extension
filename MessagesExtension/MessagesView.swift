@@ -226,19 +226,19 @@ class MessagesView: UIView {
         var viewAction: ViewAction?
         switch viewState {
         case .translationNew:
-            if let text = questionTextField.text where !text.isEmpty {
+            if let text = questionTextField.text, !text.isEmpty {
                 viewAction = ViewAction.addTranslation(question: text)
             }
         case .translationPart:
-            if let text = answerTextField.text where !text.isEmpty {
+            if let text = answerTextField.text, !text.isEmpty {
                 viewAction = ViewAction.completeTranslationKnown(answer: text)
             }
         case .correctionNew:
-            if let text = questionTextField.text where !text.isEmpty {
+            if let text = questionTextField.text, !text.isEmpty {
                 viewAction = ViewAction.addCorrection(question: text)
             }
         case .correctionPart:
-            if let text = answerTextField.text where !text.isEmpty {
+            if let text = answerTextField.text, !text.isEmpty {
                 viewAction = ViewAction.completeCorrectionIncorrect(answer: text)
             }
         default: break

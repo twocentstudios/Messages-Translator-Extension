@@ -12,7 +12,7 @@ import Messages
 extension Pair {
     init?(message: MSMessage?) {
         guard let messageURL = message?.url else { return nil }
-        guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), queryItems = urlComponents.queryItems else { return nil }
+        guard let urlComponents = NSURLComponents(url: messageURL, resolvingAgainstBaseURL: false), let queryItems = urlComponents.queryItems else { return nil }
         
         self.init(queryItems: queryItems)
     }
